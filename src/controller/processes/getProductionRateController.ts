@@ -26,38 +26,42 @@ class GetProductionRateController extends HttpController {
     const findMineralExcelLinks =
       await WebCrawlerService.getAvailableMineralExcelLinks(findMinerl.url);
 
+    let pendingDownloads = [];
+
     for (const excelLinks of findMineralExcelLinks) {
       if (excelLinks.url) {
-        try {
-          const excelData = await WebCrawlerService.getExcelFileFromURL(
-            excelLinks.url
+        const excelData = WebCrawlerService.getExcelFileFromURL(excelLinks.url);
+
+        pendingDownloads.push(excelData);
+      }
+    }
+
+    const fulfilledDownlods = await Promise.allSettled(pendingDownloads);
+
+    for (const fulfilledDownlod of fulfilledDownlods) {
+      if (fulfilledDownlod.status === "fulfilled") {
+        const excel = new ExcelService(Buffer.from(fulfilledDownlod.value));
+        const extractSheets = excel.getWorldProductionSpecifiedSheetNames();
+
+        for (const sheet of extractSheets) {
+          const data = excel.getProductionDataOfSpecificSheetByCountry(
+            sheet,
+            country as string
           );
 
-          const excel = new ExcelService(Buffer.from(excelData));
-          const extractSheets = excel.getWorldProductionSpecifiedSheetNames();
-
-          for (const sheet of extractSheets) {
-            const data = excel.getProductionDataOfSpecificSheetByCountry(
-              sheet,
-              country as string
+          for (const infoDetail of data.info) {
+            const findDuplicateYear = result.find(
+              (resultDetail) => resultDetail.year === infoDetail.year
             );
 
-            for (const infoDetail of data.info) {
-              const findDuplicateYear = result.find(
-                (resultDetail) => resultDetail.year === infoDetail.year
-              );
-
-              if (!findDuplicateYear) {
-                result.push({
-                  year: infoDetail.year,
-                  country: infoDetail.country,
-                  world: infoDetail.world,
-                });
-              }
+            if (!findDuplicateYear) {
+              result.push({
+                year: infoDetail.year,
+                country: infoDetail.country,
+                world: infoDetail.world,
+              });
             }
           }
-        } catch (err) {
-          continue;
         }
       }
     }

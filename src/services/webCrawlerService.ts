@@ -77,6 +77,7 @@ class WebCrawlerService {
   public static async getExcelFileFromURL(excelUrl: string) {
     const { data: requestResult } = await axios.get<ArrayBuffer>(excelUrl, {
       responseType: "arraybuffer",
+      timeout: 3000,
     });
 
     return requestResult;
