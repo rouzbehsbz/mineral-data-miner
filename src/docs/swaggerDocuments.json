@@ -1,0 +1,141 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "0.0.1",
+      "title": "UNI PROJECT"
+    },
+    "host": "http://1.1.1.1:3001/",
+    "basePath": "/",
+    "schemes": [
+      "https",
+      "http"
+    ],
+    "paths": {
+      "/api/v1/users": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "User Register",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "username",
+              "in": "formData",
+              "description": "Your email",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "formData",
+              "description": "Your password",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "security": [
+          ]
+        }
+      },
+      "/api/v1/users/session": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "User Login",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "username",
+              "in": "formData",
+              "description": "Your email",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "formData",
+              "description": "Your password",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "security": [
+          ]
+        }
+      },
+      "/api/v1/users/profile": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "User Profile",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "security": [
+            {
+              "apiKey": []
+            }
+          ]
+        }
+      }
+    },
+    "securityDefinitions": {
+      "apiKey": {
+        "type": "apiKey",
+        "name": "authorization",
+        "in": "header"
+      }
+    },
+    "definitions": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "result": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    }
+}

@@ -5,8 +5,8 @@ class ExcelService {
   private workbook: xlsx.WorkBook;
   private sheetNames: string[];
 
-  constructor(filePath: string) {
-    this.workbook = xlsx.readFile(path.resolve("public", filePath));
+  constructor(file: Buffer) {
+    this.workbook = xlsx.read(file);
     this.sheetNames = this.workbook.SheetNames;
   }
 
@@ -155,10 +155,7 @@ class ExcelService {
         }
 
         countryNeedTotalAmountProcessed = true;
-      } else if (
-        countryNeedTotalAmountProcessed &&
-        findIndex === cellsWithTotalAmount.length - 1
-      ) {
+      } else if (findIndex === cellsWithTotalAmount.length - 1) {
         info = info.map((detail) => {
           if (!years.find((year) => year.year === detail.year)) {
             return {
