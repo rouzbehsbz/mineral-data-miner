@@ -2,7 +2,7 @@ import axios from "axios";
 import cheerio from "cheerio";
 
 class WebCrawlerService {
-  public async getMineralNamesAndURLsList() {
+  public static async getMineralNamesAndURLsList() {
     let result: {
       name: string;
       url: string;
@@ -28,7 +28,7 @@ class WebCrawlerService {
     return result;
   }
 
-  public async getCountryNamesList() {
+  public static async getCountryNamesList() {
     let result: string[] = [];
     const { data: requestResult } = await axios.get<string>(
       "https://www.usgs.gov/centers/national-minerals-information-center/international-minerals-statistics-and-information"
@@ -48,7 +48,7 @@ class WebCrawlerService {
     return result;
   }
 
-  public async getAvailableMineralExcelLinks(mineralUrl: string) {
+  public static async getAvailableMineralExcelLinks(mineralUrl: string) {
     let result: {
       year: string;
       url: string | null;
@@ -74,7 +74,7 @@ class WebCrawlerService {
     return result;
   }
 
-  public async getExcelFileFromURL(excelUrl: string) {
+  public static async getExcelFileFromURL(excelUrl: string) {
     const { data: requestResult } = await axios.get<ArrayBuffer>(excelUrl, {
       responseType: "arraybuffer",
     });

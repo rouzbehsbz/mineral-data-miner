@@ -48,7 +48,7 @@ class ExcelService {
     let info: {
       year: number;
       country: number;
-      total: number;
+      world: number;
     }[] = [];
 
     let years: { year: number; cellChar: string }[] = [];
@@ -124,7 +124,7 @@ class ExcelService {
           country: worksheet[
             `${year.cellChar}${keySepratedCharAndDigit.numbs}`
           ]["v"] as number,
-          total: 0,
+          world: 0,
         });
       }
     }
@@ -150,7 +150,7 @@ class ExcelService {
             country: worksheet[`${year.cellChar}${cellWithTotalAmount}`][
               "v"
             ] as number,
-            total: 0,
+            world: 0,
           });
         }
 
@@ -165,7 +165,7 @@ class ExcelService {
 
           return {
             ...detail,
-            total: worksheet[
+            world: worksheet[
               `${
                 years.find((year) => year.year === detail.year)?.cellChar
               }${cellWithTotalAmount}`
