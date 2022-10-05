@@ -71,7 +71,10 @@ class ExcelService {
 
       const cellValue = worksheet[key]["v"] as string;
 
-      if (cellValue.includes("Country or locality")) {
+      if (
+        cellValue.includes("Country or locality") ||
+        cellValue.includes("Country")
+      ) {
         cellRowNumberForYearsExtracting =
           this.getCellSepratedCharAndDigit(key).numbs;
         break;
@@ -84,12 +87,15 @@ class ExcelService {
       if (keySepratedCharAndDigit.numbs !== cellRowNumberForYearsExtracting) {
         continue;
       }
-      if (!worksheet[key]["t"] || worksheet[key]["t"] !== "n") {
+      if (
+        !worksheet[key]["t"] ||
+        isNaN(`${worksheet[key]["v"]}`.replace("e", "") as any)
+      ) {
         continue;
       }
 
       years.push({
-        year: worksheet[key]["v"],
+        year: +`${worksheet[key]["v"]}`.replace("e", ""),
         cellChar: keySepratedCharAndDigit.chars,
       });
     }
@@ -119,11 +125,13 @@ class ExcelService {
           break;
         }
 
+        const country =
+          worksheet[`${year.cellChar}${keySepratedCharAndDigit.numbs}`]["v"];
+
         info.push({
           year: year.year,
-          country: worksheet[
-            `${year.cellChar}${keySepratedCharAndDigit.numbs}`
-          ]["v"] as number,
+          country:
+            country === "NA" || country === "--" ? 0 : (country as number),
           world: 0,
         });
       }
@@ -145,11 +153,13 @@ class ExcelService {
             break;
           }
 
+          const country =
+            worksheet[`${year.cellChar}${cellWithTotalAmount}`]["v"];
+
           info.push({
             year: year.year,
-            country: worksheet[`${year.cellChar}${cellWithTotalAmount}`][
-              "v"
-            ] as number,
+            country:
+              country === "NA" || country === "--" ? 0 : (country as number),
             world: 0,
           });
         }
@@ -163,13 +173,16 @@ class ExcelService {
             };
           }
 
-          return {
-            ...detail,
-            world: worksheet[
+          const world =
+            worksheet[
               `${
                 years.find((year) => year.year === detail.year)?.cellChar
               }${cellWithTotalAmount}`
-            ]["v"] as number,
+            ]["v"];
+
+          return {
+            ...detail,
+            world: world === "NA" || world === "--" ? 0 : (world as number),
           };
         });
       }

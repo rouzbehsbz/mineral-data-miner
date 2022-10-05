@@ -61,8 +61,8 @@ class GetProductionRateController extends HttpController {
                 world: infoDetail.world,
               });
             } else if (
-              result[findDuplicateYearIndex].country !== infoDetail.country ||
-              result[findDuplicateYearIndex].world !== infoDetail.world
+              result[findDuplicateYearIndex].country < infoDetail.country ||
+              result[findDuplicateYearIndex].world < infoDetail.world
             ) {
               result[findDuplicateYearIndex] = {
                 year: infoDetail.year,
