@@ -50,16 +50,25 @@ class GetProductionRateController extends HttpController {
           );
 
           for (const infoDetail of data.info) {
-            const findDuplicateYear = result.find(
+            const findDuplicateYearIndex = result.findIndex(
               (resultDetail) => resultDetail.year === infoDetail.year
             );
 
-            if (!findDuplicateYear) {
+            if (findDuplicateYearIndex === -1) {
               result.push({
                 year: infoDetail.year,
                 country: infoDetail.country,
                 world: infoDetail.world,
               });
+            } else if (
+              result[findDuplicateYearIndex].country !== infoDetail.country ||
+              result[findDuplicateYearIndex].world !== infoDetail.world
+            ) {
+              result[findDuplicateYearIndex] = {
+                year: infoDetail.year,
+                country: infoDetail.country,
+                world: infoDetail.world,
+              };
             }
           }
         }
