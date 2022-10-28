@@ -10,5 +10,5 @@ services:
     ports:
       - "3001:${APP_PORT}"
     volumes:
-      - "./prisma/schema.prisma:/app/prisma/schema.prisma"
+      - "./prisma/database.db:/app/prisma/database.db"
     restart: always
