@@ -17,12 +17,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Prisma deploy and generate prisma client
-RUN npx prisma migrate deploy --schema=prisma/schema.prisma
-RUN npx prisma generate --schema=prisma/schema.prisma
-
 # Copy other files of the project
 COPY . .
+
+# Prisma deploy and generate prisma client
+RUN npx prisma migrate deploy
+RUN npx prisma generate
 
 # Compile typescript
 RUN npm run build
