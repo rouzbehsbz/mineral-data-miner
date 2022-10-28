@@ -92,6 +92,44 @@
           "security": [
           ]
         }
+      },
+      "/api/v1/ranks/production-rates": {
+        "get": {
+          "tags": [
+            "Ranks"
+          ],
+          "summary": "Get Country Production Rate Rank",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "country",
+              "in": "query",
+              "description": "Country Name",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "mineral",
+              "in": "query",
+              "description": "Mineral Name",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "security": [
+          ]
+        }
       }
     },
     "securityDefinitions": {

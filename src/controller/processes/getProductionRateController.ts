@@ -79,7 +79,7 @@ class GetProductionRateController extends HttpController {
     for (const productionRate of result) {
       const findProductionRate = await db.production_rates.findFirst({
         where: {
-          name: findMinerl.name,
+          mineral: findMinerl.name,
           year: productionRate.year,
           country: country as string,
         },
@@ -88,7 +88,7 @@ class GetProductionRateController extends HttpController {
       if (!findProductionRate) {
         await db.production_rates.create({
           data: {
-            name: findMinerl.name,
+            mineral: findMinerl.name,
             year: productionRate.year,
             country: country as string,
             amount: productionRate.country,

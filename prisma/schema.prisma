@@ -9,7 +9,7 @@ datasource db {
 
 model production_rates {
   id      Int     @id @default(autoincrement())
-  name    String
+  mineral String
   country String
   year    Int
   amount  Decimal
