@@ -8,7 +8,7 @@ RUN apk update
 RUN apk add dumb-init
 
 # Install pm2 and typescript as global for this container in production
-RUN npm install -g pm2 typescript ts-node prisma
+RUN npm install -g pm2 typescript ts-node
 
 # Set project main directory
 WORKDIR /app
