@@ -7,32 +7,21 @@ async function main() {
     const findCountries = await axios.get(`${url}/countries`);
     const findMinerals = await axios.get(`${url}/minerals`);
 
-    let pendingPromises = [];
-
     for (const country of findCountries.data.result) {
       for (const mineral of findMinerals.data.result) {
-        const getterFunction = async () => {
-          try {
-            await axios.get(
-              `${url}/processes/production-rates?country=${country}&mineral=${mineral}`
-            );
+        try {
+          await axios.get(
+            `${url}/processes/production-rates?country=${country}&mineral=${mineral}`
+          );
 
-            console.log(
-              `Getting data of ${country} for ${mineral} has been finished.`
-            );
-
-            return Promise.resolve();
-          } catch (err) {
-            console.log(`Can't get data of ${country} for ${mineral}.`);
-            return Promise.resolve();
-          }
-        };
-
-        pendingPromises.push(getterFunction);
+          console.log(
+            `Getting data of ${country} for ${mineral} has been finished.`
+          );
+        } catch (err) {
+          continue;
+        }
       }
     }
-
-    await Promise.all(pendingPromises);
 
     process.exit(0);
   } catch (err) {
