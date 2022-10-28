@@ -1,5 +1,6 @@
 import { Request } from "express";
 import HttpController, { HttpHandlerResult } from "..";
+import db from "../../database";
 import HttpError from "../../errors/httpError";
 import ExcelService from "../../services/excelService";
 import WebCrawlerService from "../../services/webCrawlerService";
@@ -72,6 +73,27 @@ class GetProductionRateController extends HttpController {
             }
           }
         }
+      }
+    }
+
+    for (const productionRate of result) {
+      const findProductionRate = await db.production_rates.findFirst({
+        where: {
+          name: findMinerl.name,
+          year: productionRate.year,
+          country: country as string,
+        },
+      });
+
+      if (!findProductionRate) {
+        await db.production_rates.create({
+          data: {
+            name: findMinerl.name,
+            year: productionRate.year,
+            country: country as string,
+            amount: productionRate.country,
+          },
+        });
       }
     }
 
